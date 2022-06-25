@@ -21,6 +21,8 @@ export default class World
 
     resize()
     {
+        if(this.blackHole)
+            this.blackHole.resize()
     }
 
     update()
