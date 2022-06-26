@@ -7,7 +7,7 @@ export default class World
     {
         this.experience = new Experience()
         this.config = this.experience.config
-        this.scene = this.experience.scene
+        this.scenes = this.experience.scenes
         this.resources = this.experience.resources
         
         this.resources.on('groupEnd', (_group) =>

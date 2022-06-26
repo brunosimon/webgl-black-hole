@@ -16,7 +16,7 @@ class Noises
 
         this.experience = new Experience()
         this.renderer = this.experience.renderer
-        this.scene = this.experience.scene
+        this.scenes = this.experience.scenes
         
         this.setCustomRender()
         this.setMaterial()
@@ -86,10 +86,10 @@ class Noises
 
         window.requestAnimationFrame(() =>
         {
-            this.scene.add(meshA)
-            // this.scene.add(meshB)
-            // this.scene.add(meshC)
-            // this.scene.add(meshD)
+            this.scenes.space.add(meshA)
+            // this.scenes.space.add(meshB)
+            // this.scenes.space.add(meshC)
+            // this.scenes.space.add(meshD)
         })
     }
 

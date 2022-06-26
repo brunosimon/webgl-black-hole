@@ -1,7 +1,6 @@
 import * as THREE from 'three'
 import Experience from './Experience.js'
-import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js'
-import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
+import FinalMaterial from './Materials/FinalMaterial.js'
 
 export default class Renderer
 {
@@ -13,18 +12,16 @@ export default class Renderer
         this.stats = this.experience.stats
         this.time = this.experience.time
         this.sizes = this.experience.sizes
-        this.scene = this.experience.scene
+        this.scenes = this.experience.scenes
         this.camera = this.experience.camera
      
-        this.usePostprocess = false
-
         this.setInstance()
-        this.setPostProcess()
+        this.setComposition()
     }
 
     setInstance()
     {
-        this.clearColor = '#120e15'
+        this.clearColor = '#000000'
 
         // Renderer
         this.instance = new THREE.WebGLRenderer({
@@ -86,7 +83,7 @@ export default class Renderer
                 )
                 .onChange(() =>
                 {
-                    this.scene.traverse((_child) =>
+                    this.scenes.traverse((_child) =>
                     {
                         if(_child instanceof THREE.Mesh)
                             _child.material.needsUpdate = true
@@ -103,35 +100,32 @@ export default class Renderer
         }
     }
 
-    setPostProcess()
+    setComposition()
     {
-        this.postProcess = {}
-
-        /**
-         * Render pass
-         */
-        this.postProcess.renderPass = new RenderPass(this.scene, this.camera.instance)
-
-        /**
-         * Effect composer
-         */
-        this.renderTarget = new THREE.WebGLRenderTarget(
-            this.config.width,
-            this.config.height,
+        this.composition = {}
+        this.composition.space = new THREE.WebGLRenderTarget(this.sizes.width, this.sizes.height)
+        this.composition.distortion = new THREE.WebGLRenderTarget(
+            this.sizes.width,
+            this.sizes.height,
             {
-                generateMipmaps: false,
-                minFilter: THREE.LinearFilter,
-                magFilter: THREE.LinearFilter,
-                format: THREE.RGBFormat,
-                encoding: THREE.sRGBEncoding,
-                samples: 2
+                magFilter: THREE.NearestFilter,
+                minFilter: THREE.NearestFilter,
+                format: THREE.RedFormat,
+                type: THREE.FloatType
             }
         )
-        this.postProcess.composer = new EffectComposer(this.instance, this.renderTarget)
-        this.postProcess.composer.setSize(this.config.width, this.config.height)
-        this.postProcess.composer.setPixelRatio(this.config.pixelRatio)
-
-        this.postProcess.composer.addPass(this.postProcess.renderPass)
+        
+        this.composition.final = {}
+        this.composition.final.material = new FinalMaterial()
+        this.composition.final.material.uniforms.uSpaceTexture.value = this.composition.space.texture
+        this.composition.final.material.uniforms.uDistortionTexture.value = this.composition.distortion.texture
+        this.composition.final.plane = new THREE.Mesh(
+            new THREE.PlaneGeometry(2, 2),
+            this.composition.final.material
+        )
+        this.composition.final.plane.frustumCulled = false
+        this.composition.final.scene = new THREE.Scene()
+        this.composition.final.scene.add(this.composition.final.plane)
     }
 
     resize()
@@ -152,14 +146,14 @@ export default class Renderer
             this.stats.beforeRender()
         }
 
-        if(this.usePostprocess)
-        {
-            this.postProcess.composer.render()
-        }
-        else
-        {
-            this.instance.render(this.scene, this.camera.instance)
-        }
+        this.instance.setRenderTarget(this.composition.space)
+        this.instance.render(this.scenes.space, this.camera.instance)
+
+        this.instance.setRenderTarget(this.composition.distortion)
+        this.instance.render(this.scenes.distortion, this.camera.instance)
+
+        this.instance.setRenderTarget(null)
+        this.instance.render(this.composition.final.scene, this.camera.instance)
 
         if(this.stats)
         {

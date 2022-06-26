@@ -13,7 +13,7 @@ export default class Camera
         this.time = this.experience.time
         this.sizes = this.experience.sizes
         this.targetElement = this.experience.targetElement
-        this.scene = this.experience.scene
+        this.scenes = this.experience.scenes
 
         // Set up
         this.mode = 'debug' // defaultCamera \ debugCamera
@@ -28,7 +28,7 @@ export default class Camera
         this.instance = new THREE.PerspectiveCamera(25, this.config.width / this.config.height, 0.1, 150)
         this.instance.rotation.reorder('YXZ')
 
-        this.scene.add(this.instance)
+        this.scenes.space.add(this.instance)
     }
 
     setModes()

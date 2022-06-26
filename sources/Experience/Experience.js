@@ -36,7 +36,7 @@ export default class Experience
         this.sizes = new Sizes()
         this.setConfig()
         this.setDebug()
-        this.setScene()
+        this.setScenes()
         this.setCamera()
         this.setRenderer()
         this.setResources()
@@ -68,9 +68,12 @@ export default class Experience
         this.debug = new Debug()
     }
     
-    setScene()
+    setScenes()
     {
-        this.scene = new THREE.Scene()
+        this.scenes = {}
+        this.scenes.space = new THREE.Scene()
+        this.scenes.distortion = new THREE.Scene()
+        this.scenes.final = new THREE.Scene()
     }
 
     setCamera()

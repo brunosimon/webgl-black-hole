@@ -3,6 +3,8 @@ import Experience from './Experience.js'
 import Noises from './Noises.js'
 import BlackHoleDiscMaterial from './Materials/BlackHoleDiscMaterial.js'
 import BlackHoleParticlesMaterial from './Materials/BlackHoleParticlesMaterial.js'
+import BlackHoleDistortionActiveMaterial from './Materials/BlackHoleDistortionActiveMaterial.js'
+import BlackHoleDistortionMaskMaterial from './Materials/BlackHoleDistortionMaskMaterial.js'
 
 export default class BlackHole
 {
@@ -10,16 +12,18 @@ export default class BlackHole
     {
         this.experience = new Experience()
         this.config = this.experience.config
-        this.scene = this.experience.scene
+        this.scenes = this.experience.scenes
         this.time = this.experience.time
         this.debug = this.experience.debug
         this.sizes = this.experience.sizes
+        this.camera = this.experience.camera
 
         this.noises = new Noises()
 
         this.setCommonUniforms()
         this.setParticles()
         this.setDisc()
+        this.setDistortion()
     }
 
     setCommonUniforms()
@@ -63,7 +67,7 @@ export default class BlackHole
             this.disc.geometry,
             this.disc.material
         )
-        this.scene.add(this.disc.mesh)
+        this.scenes.space.add(this.disc.mesh)
     }
 
     setParticles()
@@ -98,7 +102,27 @@ export default class BlackHole
         )
         this.particles.points.frustumCulled = false
 
-        this.scene.add(this.particles.points)
+        this.scenes.space.add(this.particles.points)
+    }
+
+    setDistortion()
+    {
+        this.distortion = {}
+        
+        this.distortion.active = {}
+        this.distortion.active.geometry = new THREE.PlaneBufferGeometry(1, 1)
+        this.distortion.active.material = new BlackHoleDistortionActiveMaterial()
+        this.distortion.active.mesh = new THREE.Mesh(this.distortion.active.geometry, this.distortion.active.material)
+        this.distortion.active.mesh.scale.set(5, 5, 5)
+        this.scenes.distortion.add(this.distortion.active.mesh)
+
+        this.distortion.mask = {}
+        this.distortion.mask.geometry = new THREE.PlaneBufferGeometry(1, 1)
+        this.distortion.mask.material = new BlackHoleDistortionMaskMaterial()
+        this.distortion.mask.mesh = new THREE.Mesh(this.distortion.mask.geometry, this.distortion.mask.material)
+        this.distortion.mask.mesh.scale.set(5, 5, 5)
+        this.distortion.mask.mesh.rotation.x = Math.PI * 0.5
+        // this.scenes.distortion.add(this.distortion.mask.mesh)
     }
 
     resize()
@@ -110,5 +134,7 @@ export default class BlackHole
     {
         this.disc.material.uniforms.uTime.value = this.time.elapsed
         this.particles.material.uniforms.uTime.value = this.time.elapsed + 9999.0
+
+        this.distortion.active.mesh.lookAt(this.camera.instance.position)
     }
 }
