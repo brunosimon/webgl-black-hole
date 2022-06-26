@@ -19,7 +19,10 @@ float remap(float v, float inMin, float inMax, float outMin, float outMax)
 void main()
 {
     float distanceToCenter = length(vUv - 0.5);
-    float strength = remap(distanceToCenter, 0.25, 0.5, 1.0, 0.0);
-    strength = smoothstep(0.0, 1.0, strength);
-    pc_FragColor = vec4(0.0, 0.0, 0.0, strength);
+    float radialStrength = remap(distanceToCenter, 0.0, 0.15, 1.0, 0.0);
+    radialStrength = smoothstep(0.0, 1.0, radialStrength);
+
+    float alpha = smoothstep(0.0, 1.0, remap(distanceToCenter, 0.4, 0.5, 1.0, 0.0));
+
+    pc_FragColor = vec4(radialStrength, 0.0, 0.0, alpha);
 }

@@ -21,7 +21,5 @@ void main()
     vec3 spaceColor = texture(uSpaceTexture, distoredUv).rgb;
 
     pc_FragColor = vec4(spaceColor, 1.0);
-    // pc_FragColor = vec4(vec3(distortionColor.r), 1.0);
     // pc_FragColor = distortionColor;
-    // pc_FragColor = vec4(vec3(distortionIntensity), 1.0);
 }

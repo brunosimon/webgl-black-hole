@@ -103,13 +103,22 @@ export default class Renderer
     setComposition()
     {
         this.composition = {}
-        this.composition.space = new THREE.WebGLRenderTarget(this.sizes.width, this.sizes.height)
-        this.composition.distortion = new THREE.WebGLRenderTarget(
-            this.sizes.width,
-            this.sizes.height,
+
+        this.composition.space = new THREE.WebGLRenderTarget(
+            this.sizes.width * 2,
+            this.sizes.height * 2,
             {
-                magFilter: THREE.NearestFilter,
-                minFilter: THREE.NearestFilter,
+                magFilter: THREE.LinearFilter,
+                minFilter: THREE.LinearFilter
+            }
+        )
+        
+        this.composition.distortion = new THREE.WebGLRenderTarget(
+            this.sizes.width * 0.5,
+            this.sizes.height * 0.5,
+            {
+                magFilter: THREE.LinearFilter,
+                minFilter: THREE.LinearFilter,
                 format: THREE.RedFormat,
                 type: THREE.FloatType
             }

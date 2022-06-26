@@ -17,6 +17,7 @@ export default class BlackHole
         this.debug = this.experience.debug
         this.sizes = this.experience.sizes
         this.camera = this.experience.camera
+        this.renderer = this.experience.renderer
 
         this.noises = new Noises()
 
@@ -73,7 +74,7 @@ export default class BlackHole
     setParticles()
     {
         this.particles = {}
-        this.particles.count = 10000
+        this.particles.count = 50000
 
         // Geometry
         const distanceArray = new Float32Array(this.particles.count)
@@ -91,7 +92,7 @@ export default class BlackHole
         // Material
         // this.particles.material = new THREE.PointsMaterial()
         this.particles.material = new BlackHoleParticlesMaterial()
-        this.particles.material.uniforms.uViewHeight.value = this.sizes.height
+        this.particles.material.uniforms.uViewHeight.value = this.renderer.composition.space.height
         this.particles.material.uniforms.uInnerColor = this.commonUniforms.uInnerColor
         this.particles.material.uniforms.uOuterColor = this.commonUniforms.uOuterColor
 
@@ -113,16 +114,16 @@ export default class BlackHole
         this.distortion.active.geometry = new THREE.PlaneBufferGeometry(1, 1)
         this.distortion.active.material = new BlackHoleDistortionActiveMaterial()
         this.distortion.active.mesh = new THREE.Mesh(this.distortion.active.geometry, this.distortion.active.material)
-        this.distortion.active.mesh.scale.set(5, 5, 5)
+        this.distortion.active.mesh.scale.set(10, 10, 10)
         this.scenes.distortion.add(this.distortion.active.mesh)
 
         this.distortion.mask = {}
         this.distortion.mask.geometry = new THREE.PlaneBufferGeometry(1, 1)
         this.distortion.mask.material = new BlackHoleDistortionMaskMaterial()
         this.distortion.mask.mesh = new THREE.Mesh(this.distortion.mask.geometry, this.distortion.mask.material)
-        this.distortion.mask.mesh.scale.set(5, 5, 5)
+        this.distortion.mask.mesh.scale.set(10, 10, 10)
         this.distortion.mask.mesh.rotation.x = Math.PI * 0.5
-        // this.scenes.distortion.add(this.distortion.mask.mesh)
+        this.scenes.distortion.add(this.distortion.mask.mesh)
     }
 
     resize()
@@ -132,6 +133,9 @@ export default class BlackHole
 
     update()
     {
+        const screenPosition = new THREE.Vector3(0, 0, 0)
+        screenPosition.project(this.camera.instance)
+
         this.disc.material.uniforms.uTime.value = this.time.elapsed
         this.particles.material.uniforms.uTime.value = this.time.elapsed + 9999.0
 

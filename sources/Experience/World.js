@@ -1,5 +1,6 @@
 import BlackHole from './BlackHole.js'
 import Experience from './Experience.js'
+import Stars from './Stars.js'
 
 export default class World
 {
@@ -15,6 +16,7 @@ export default class World
             if(_group.name === 'base')
             {
                 this.blackHole = new BlackHole()
+                this.stars = new Stars()
             }
         })
     }

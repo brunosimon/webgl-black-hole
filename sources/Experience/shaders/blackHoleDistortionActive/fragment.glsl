@@ -18,8 +18,14 @@ float remap(float v, float inMin, float inMax, float outMin, float outMax)
 
 void main()
 {
-    float strength = 1.0 - length(vUv - 0.5) * 2.0;
-    strength = smoothstep(0.0, 1.0, strength);
+    float distanceToCenter = length(vUv - 0.5);
+    float radialStrength = remap(distanceToCenter, 0.0, 0.15, 1.0, 0.0);
+    radialStrength = smoothstep(0.0, 1.0, radialStrength);
+
+    // float gradientStrength = abs(vUv.y - 0.5) * 20.0;
+    // gradientStrength = smoothstep(0.0, 1.0, gradientStrength);
+
+    float strength = radialStrength;
     // pc_FragColor.r = strength;
-    pc_FragColor = vec4(strength, 1.0, 1.0, 1.0 );
+    pc_FragColor = vec4(strength, 1.0, 1.0, 1.0);
 }

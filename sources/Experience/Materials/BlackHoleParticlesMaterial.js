@@ -17,7 +17,7 @@ function BlackHoleParticlesMaterial()
             uInnerColor: { value: new THREE.Color('#ff8080') },
             uOuterColor: { value: new THREE.Color('#3633ff') },
             uViewHeight: { value: 1024 },
-            uSize: { value: 0.05 },
+            uSize: { value: 0.03 },
         },
         vertexShader: vertexShader,
         fragmentShader: fragmentShader
