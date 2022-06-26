@@ -135,10 +135,17 @@ export default class BlackHole
     {
         const screenPosition = new THREE.Vector3(0, 0, 0)
         screenPosition.project(this.camera.instance)
+        screenPosition.x = screenPosition.x * 0.5 + 0.5
+        screenPosition.y = screenPosition.y * 0.5 + 0.5
 
         this.disc.material.uniforms.uTime.value = this.time.elapsed
         this.particles.material.uniforms.uTime.value = this.time.elapsed + 9999.0
 
         this.distortion.active.mesh.lookAt(this.camera.instance.position)
+
+        this.renderer.composition.final.material.uniforms.uBlackHolePosition.value.set(
+            screenPosition.x,
+            screenPosition.y
+        )
     }
 }

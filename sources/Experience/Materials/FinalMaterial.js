@@ -11,6 +11,7 @@ function FinalMaterial()
     // Buffers
     uniforms.uSpaceTexture = { value: null }
     uniforms.uDistortionTexture = { value: null }
+    uniforms.uBlackHolePosition = { value: new THREE.Vector2() }
 
     // Final material
     const material = new THREE.RawShaderMaterial({
