@@ -30,14 +30,14 @@ export default class DebugStats
 
     setRenderPanel(_context)
     {
-        this.experience = {}
-        this.experience.context = _context
-        this.experience.extension = this.experience.context.getExtension('EXT_disjoint_timer_query_webgl2')
-        this.experience.panel = this.instance.addPanel(new StatsJs.Panel('Render (ms)', '#f8f', '#212'))
+        this.render = {}
+        this.render.context = _context
+        this.render.extension = this.render.context.getExtension('EXT_disjoint_timer_query_webgl2')
+        this.render.panel = this.instance.addPanel(new StatsJs.Panel('Render (ms)', '#f8f', '#212'))
 
         const webGL2 = typeof WebGL2RenderingContext !== 'undefined' && _context instanceof WebGL2RenderingContext
 
-        if(!webGL2 || !this.experience.extension)
+        if(!webGL2 || !this.render.extension)
         {
             this.deactivate()
         }
@@ -55,14 +55,14 @@ export default class DebugStats
         let queryResultAvailable = false
 
         // Test if query result available
-        if(this.experience.query)
+        if(this.render.query)
         {
-            queryResultAvailable = this.experience.context.getQueryParameter(this.experience.query, this.experience.context.QUERY_RESULT_AVAILABLE)
-            const disjoint = this.experience.context.getParameter(this.experience.extension.GPU_DISJOINT_EXT)
+            queryResultAvailable = this.render.context.getQueryParameter(this.render.query, this.render.context.QUERY_RESULT_AVAILABLE)
+            const disjoint = this.render.context.getParameter(this.render.extension.GPU_DISJOINT_EXT)
                 
             if(queryResultAvailable && !disjoint)
             {
-                const elapsedNanos = this.experience.context.getQueryParameter(this.experience.query, this.experience.context.QUERY_RESULT)
+                const elapsedNanos = this.render.context.getQueryParameter(this.render.query, this.render.context.QUERY_RESULT)
                 const panelValue = Math.min(elapsedNanos / 1000 / 1000, this.max)
 
                 if(panelValue === this.max && this.ignoreMaxed)
@@ -71,18 +71,18 @@ export default class DebugStats
                 }
                 else
                 {
-                    this.experience.panel.update(panelValue, this.max)
+                    this.render.panel.update(panelValue, this.max)
                 }
             }
         }
 
         // If query result available or no query yet
-        if(queryResultAvailable || !this.experience.query)
+        if(queryResultAvailable || !this.render.query)
         {
             // Create new query
             this.queryCreated = true
-            this.experience.query = this.experience.context.createQuery()
-            this.experience.context.beginQuery(this.experience.extension.TIME_ELAPSED_EXT, this.experience.query)
+            this.render.query = this.render.context.createQuery()
+            this.render.context.beginQuery(this.render.extension.TIME_ELAPSED_EXT, this.render.query)
         }
 
     }
@@ -97,7 +97,7 @@ export default class DebugStats
         // End the query (result will be available "later")
         if(this.queryCreated)
         {
-            this.experience.context.endQuery(this.experience.extension.TIME_ELAPSED_EXT)
+            this.render.context.endQuery(this.render.extension.TIME_ELAPSED_EXT)
         }
     }
 

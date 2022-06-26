@@ -9,7 +9,6 @@ export default class Renderer
         this.experience = new Experience()
         this.config = this.experience.config
         this.debug = this.experience.debug
-        this.stats = this.experience.stats
         this.time = this.experience.time
         this.sizes = this.experience.sizes
         this.scenes = this.experience.scenes
@@ -49,9 +48,9 @@ export default class Renderer
         this.context = this.instance.getContext()
 
         // Add stats panel
-        if(this.stats)
+        if(this.debug.stats)
         {
-            this.stats.setRenderPanel(this.context)
+            this.debug.stats.setRenderPanel(this.context)
         }
         
         // Debug
@@ -150,9 +149,9 @@ export default class Renderer
 
     update()
     {
-        if(this.stats)
+        if(this.debug.stats)
         {
-            this.stats.beforeRender()
+            this.debug.stats.beforeRender()
         }
 
         this.instance.setRenderTarget(this.composition.space)
@@ -164,9 +163,9 @@ export default class Renderer
         this.instance.setRenderTarget(null)
         this.instance.render(this.composition.final.scene, this.camera.instance)
 
-        if(this.stats)
+        if(this.debug.stats)
         {
-            this.stats.afterRender()
+            this.debug.stats.afterRender()
         }
     }
 
