@@ -154,6 +154,7 @@ export default class Renderer
             this.debug.stats.beforeRender()
         }
 
+        this.instance.autoClearColor = true
         this.instance.setRenderTarget(this.composition.space)
         this.instance.render(this.scenes.space, this.camera.instance)
 
@@ -162,6 +163,10 @@ export default class Renderer
 
         this.instance.setRenderTarget(null)
         this.instance.render(this.composition.final.scene, this.camera.instance)
+
+        this.instance.autoClearColor = false
+        this.instance.setRenderTarget(null)
+        this.instance.render(this.scenes.overlay, this.camera.instance)
 
         if(this.debug.stats)
         {

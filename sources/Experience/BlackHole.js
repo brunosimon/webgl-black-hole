@@ -79,15 +79,18 @@ export default class BlackHole
         // Geometry
         const distanceArray = new Float32Array(this.particles.count)
         const sizeArray = new Float32Array(this.particles.count)
+        const randomArray = new Float32Array(this.particles.count)
         for(let i = 0; i < this.particles.count; i++)
         {
             distanceArray[i] = Math.random()
             sizeArray[i] = Math.random()
+            randomArray[i] = Math.random()
         }
 
         this.particles.geometry = new THREE.BufferGeometry()
         this.particles.geometry.setAttribute('position', new THREE.Float32BufferAttribute(distanceArray, 1))
         this.particles.geometry.setAttribute('aSize', new THREE.Float32BufferAttribute(sizeArray, 1))
+        this.particles.geometry.setAttribute('aRandom', new THREE.Float32BufferAttribute(randomArray, 1))
 
         // Material
         // this.particles.material = new THREE.PointsMaterial()

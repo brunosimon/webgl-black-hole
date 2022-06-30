@@ -73,7 +73,7 @@ export default class Experience
         this.scenes = {}
         this.scenes.space = new THREE.Scene()
         this.scenes.distortion = new THREE.Scene()
-        this.scenes.final = new THREE.Scene()
+        this.scenes.overlay = new THREE.Scene()
     }
 
     setCamera()
@@ -102,11 +102,11 @@ export default class Experience
     {
         if(this.stats)
             this.stats.update()
-        
-        this.camera.update()
 
         if(this.world)
             this.world.update()
+        
+        this.camera.update()
         
         if(this.renderer)
             this.renderer.update()

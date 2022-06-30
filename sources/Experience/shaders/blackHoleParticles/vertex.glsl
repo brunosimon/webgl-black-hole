@@ -10,14 +10,16 @@ uniform float uSize;
 
 in float position;
 in float aSize;
+in float aRandom;
 
 out vec3 vColor;
 
 void main()
 {
     // float outerProgress = ;
-    float concentration = 0.025;
-    float outerProgress = mix(position, concentration, smoothstep(0.0, 1.3, aSize));
+    float concentration = 0.05;
+    float outerProgress = smoothstep(0.0, 1.0, position);
+    outerProgress = mix(concentration, outerProgress, pow(aRandom, 1.7));
     float radius = 1.0 + outerProgress * 5.0;
     
     float angle = outerProgress - uTime * (1.0 - outerProgress) * 3.0;

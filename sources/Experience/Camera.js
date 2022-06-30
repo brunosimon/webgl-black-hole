@@ -16,16 +16,32 @@ export default class Camera
         this.scenes = this.experience.scenes
 
         // Set up
-        this.mode = 'debug' // defaultCamera \ debugCamera
+        this.mode = 'default' // default \ debug
 
         this.setInstance()
         this.setModes()
+
+        // Debug
+        if(this.debug.active)
+        {
+            const folder = this.debug.ui.getFolder('camera')
+            
+            folder
+                .add(
+                    this,
+                    'mode',
+                    {
+                        debug: 'debug',
+                        default: 'default'
+                    }
+                )
+        }
     }
 
     setInstance()
     {
         // Set up
-        this.instance = new THREE.PerspectiveCamera(25, this.config.width / this.config.height, 0.1, 1000)
+        this.instance = new THREE.PerspectiveCamera(45, this.config.width / this.config.height, 0.1, 1000)
         this.instance.rotation.reorder('YXZ')
 
         this.scenes.space.add(this.instance)
@@ -74,9 +90,18 @@ export default class Camera
         this.modes.debug.orbitControls.update()
 
         // Apply coordinates
-        this.instance.position.copy(this.modes[this.mode].instance.position)
-        this.instance.quaternion.copy(this.modes[this.mode].instance.quaternion)
-        this.instance.updateMatrixWorld() // To be used in projection
+        const source = this.modes[this.mode].instance
+        // this.instance.position.copy(source.position)
+        // this.instance.quaternion.copy(source.quaternion)
+        // this.instance.updateMatrixWorld() // To be used in projection
+
+        source.updateWorldMatrix(true, false)
+
+        this.instance.position.set(0, 0, 0)
+        this.instance.quaternion.set(0, 0, 0, 0)
+        this.instance.scale.set(1, 1, 1)
+        this.instance.applyMatrix4(source.matrixWorld)
+        this.instance.scale.set(1, 1, 1)
     }
 
     destroy()
