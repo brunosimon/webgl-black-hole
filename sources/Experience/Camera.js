@@ -16,7 +16,7 @@ export default class Camera
         this.scenes = this.experience.scenes
 
         // Set up
-        this.mode = 'default' // default \ debug
+        this.mode = 'debug' // default \ debug
 
         this.setInstance()
         this.setModes()

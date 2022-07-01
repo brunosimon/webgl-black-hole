@@ -12,8 +12,18 @@ export default class Cupola
         this.resources = this.experience.resources
         this.scenes = this.experience.scenes
 
+        this.model = this.resources.items.cupolaModel.scene
+        this.model.traverse((_child) =>
+        {
+            if(_child instanceof THREE.Mesh)
+            {
+                _child.castShadow = true
+                _child.receiveShadow = true
+            }
+        })
+
         this.group = new THREE.Group()
-        this.group.add(this.resources.items.cupolaModel.scene)
+        this.group.add(this.model)
     }
 
     update()

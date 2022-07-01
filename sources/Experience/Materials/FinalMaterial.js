@@ -12,7 +12,7 @@ function FinalMaterial()
     uniforms.uSpaceTexture = { value: null }
     uniforms.uDistortionTexture = { value: null }
     uniforms.uBlackHolePosition = { value: new THREE.Vector2() }
-    uniforms.uRGBShiftRadius = { value: 0.001 }
+    uniforms.uRGBShiftRadius = { value: 0.00001 }
 
     // Final material
     const material = new THREE.RawShaderMaterial({
