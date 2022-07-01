@@ -68,10 +68,13 @@ export default class Spaceship
         this.view.targetRotation.x = - this.cursor.normalisedY
         this.view.targetRotation.y = - this.cursor.normalisedX
 
+        this.view.rotation.x += (this.view.targetRotation.x - this.view.rotation.x) * this.time.delta * 2
+        this.view.rotation.y += (this.view.targetRotation.y - this.view.rotation.y) * this.time.delta * 2
+
         // this.view.targetRotation.x 
 
         this.view.camera.position.set(0, 0, 2)
-        this.view.camera.rotation.copy(this.view.targetRotation)
+        this.view.camera.rotation.copy(this.view.rotation)
 
         this.group.position.z = Math.sin(this.time.elapsed * 0.5) * 2 + 5
         this.group.rotation.y = 0.5

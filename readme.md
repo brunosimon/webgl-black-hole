@@ -14,3 +14,16 @@ npm run dev
 # Build for production in the dist/ directory
 npm run build
 ```
+
+
+# TODO
+
+- [x] RGBShift
+- [ ] Vignette
+- [ ] Vibration
+- [ ] Better lighting
+- [ ] Timeline
+- [ ] Base model
+- [ ] Textured model
+- [ ] Intro
+- [ ] Outro
