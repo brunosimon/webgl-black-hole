@@ -12,15 +12,15 @@ export default class World
         this.scenes = this.experience.scenes
         this.resources = this.experience.resources
 
-        this.resources.on('groupEnd', (_group) =>
-        {
-            if(_group.name === 'base')
-            {
-                this.blackHole = new BlackHole()
-                this.stars = new Stars()
-                this.spaceship = new Spaceship()
-            }
-        })
+        this.blackHole = new BlackHole()
+        this.stars = new Stars()
+        // this.resources.on('groupEnd', (_group) =>
+        // {
+        //     if(_group.name === 'base')
+        //     {
+        //         this.spaceship = new Spaceship()
+        //     }
+        // })
     }
 
     resize()
@@ -34,8 +34,8 @@ export default class World
         if(this.blackHole)
             this.blackHole.update()
         
-        if(this.spaceship)
-            this.spaceship.update()
+        // if(this.spaceship)
+        //     this.spaceship.update()
     }
 
     destroy()
