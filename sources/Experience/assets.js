@@ -4,7 +4,7 @@ export default [
         data: {},
         items:
         [
-            { name: 'cupolaModel', source: '/assets/models/cupola.glb' },
+            // { name: 'cupolaModel', source: '/assets/models/cupola.glb' },
         ]
     }
 ]
