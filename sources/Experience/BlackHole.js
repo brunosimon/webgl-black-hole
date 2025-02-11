@@ -6,10 +6,8 @@ import BlackHoleParticlesMaterial from './Materials/BlackHoleParticlesMaterial.j
 import BlackHoleDistortionActiveMaterial from './Materials/BlackHoleDistortionActiveMaterial.js'
 import BlackHoleDistortionMaskMaterial from './Materials/BlackHoleDistortionMaskMaterial.js'
 
-export default class BlackHole
-{
-    constructor()
-    {
+export default class BlackHole {
+    constructor() {
         this.experience = new Experience()
         this.config = this.experience.config
         this.scenes = this.experience.scenes
@@ -27,23 +25,21 @@ export default class BlackHole
         this.setDistortion()
     }
 
-    setCommonUniforms()
-    {
+    setCommonUniforms() {
         this.commonUniforms = {}
-        this.commonUniforms.uInnerColor = { value: new THREE.Color('#ff8080') }
-        this.commonUniforms.uOuterColor = { value: new THREE.Color('#3633ff') }
+        this.commonUniforms.uInnerColor = { value: new THREE.Color('#ffbb3f') }
+        this.commonUniforms.uOuterColor = { value: new THREE.Color('#ed7909') }
 
         // Debug
-        if(this.debug.active)
-        {
+        if (this.debug.active) {
             const folder = this.debug.ui.getFolder('blackhole')
-            
+
             folder
                 .addColor(
                     this.commonUniforms.uInnerColor,
                     'value'
                 )
-                
+
             folder
                 .addColor(
                     this.commonUniforms.uOuterColor,
@@ -52,8 +48,7 @@ export default class BlackHole
         }
     }
 
-    setDisc()
-    {
+    setDisc() {
         this.disc = {}
 
         this.disc.geometry = new THREE.CylinderGeometry(5, 1, 0, 64, 10, true)
@@ -63,7 +58,7 @@ export default class BlackHole
         this.disc.material.uniforms.uNoiseTexture.value = this.disc.noiseTexture
         this.disc.material.uniforms.uInnerColor = this.commonUniforms.uInnerColor
         this.disc.material.uniforms.uOuterColor = this.commonUniforms.uOuterColor
-        
+
         this.disc.mesh = new THREE.Mesh(
             this.disc.geometry,
             this.disc.material
@@ -71,8 +66,7 @@ export default class BlackHole
         this.scenes.space.add(this.disc.mesh)
     }
 
-    setParticles()
-    {
+    setParticles() {
         this.particles = {}
         this.particles.count = 50000
 
@@ -80,8 +74,7 @@ export default class BlackHole
         const distanceArray = new Float32Array(this.particles.count)
         const sizeArray = new Float32Array(this.particles.count)
         const randomArray = new Float32Array(this.particles.count)
-        for(let i = 0; i < this.particles.count; i++)
-        {
+        for (let i = 0; i < this.particles.count; i++) {
             distanceArray[i] = Math.random()
             sizeArray[i] = Math.random()
             randomArray[i] = Math.random()
@@ -109,10 +102,9 @@ export default class BlackHole
         this.scenes.space.add(this.particles.points)
     }
 
-    setDistortion()
-    {
+    setDistortion() {
         this.distortion = {}
-        
+
         this.distortion.active = {}
         this.distortion.active.geometry = new THREE.PlaneBufferGeometry(1, 1)
         this.distortion.active.material = new BlackHoleDistortionActiveMaterial()
@@ -129,13 +121,11 @@ export default class BlackHole
         this.scenes.distortion.add(this.distortion.mask.mesh)
     }
 
-    resize()
-    {
+    resize() {
         this.particles.material.uniforms.uViewHeight.value = this.sizes.height
     }
 
-    update()
-    {
+    update() {
         const screenPosition = new THREE.Vector3(0, 0, 0)
         screenPosition.project(this.camera.instance)
         screenPosition.x = screenPosition.x * 0.5 + 0.5
