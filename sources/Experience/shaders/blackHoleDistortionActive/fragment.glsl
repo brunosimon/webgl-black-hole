@@ -3,8 +3,7 @@ precision highp int;
 
 in vec2 vUv;
 
-layout(location = 0) out vec4 pc_FragColor;
-
+out vec4 gl_FragColor;
 float inverseLerp(float v, float minValue, float maxValue)
 {
     return (v - minValue) / (maxValue - minValue);
@@ -27,5 +26,4 @@ void main()
 
     float strength = radialStrength;
     // pc_FragColor.r = strength;
-    pc_FragColor = vec4(strength, 1.0, 1.0, 1.0);
-}
+gl_FragColor = vec4(strength, 1.0, 1.0, 1.0);}
